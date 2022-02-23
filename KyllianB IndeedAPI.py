@@ -36,6 +36,26 @@ response = requests.request("GET", url, headers=headers, params=querystring)
 print(response.text)
 
 #%%
-import pandas as pd
+import urllib3
+URL = "https://fr.indeed.com/jobs?q=Data&l=Centre-Val+de+Loire"
+r = http.request('GET', URL)
+script = r.data
 
-df = pd.read_csv('run_results.csv')
+#%%
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(r.read(), 'html.parser')
+
+results = soup.find_all('div', attrs={'data-tn-component': 'organicJob'})
+
+for x in results:
+    company = x.find('span', attrs={"itemprop":"name"})
+    print ('company:', company.text.strip())
+
+    job = x.find('a', attrs={'data-tn-element': "jobTitle"})
+    print ('job:', job.text.strip())
+
+    salary = x.find('nobr')
+    if salary:
+        print ('salary:', salary.text.strip())
+
+    print ('----------')
