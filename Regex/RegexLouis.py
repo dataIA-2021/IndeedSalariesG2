@@ -35,6 +35,10 @@ df['TContrat'] = pd.Series(TContrat)
 
 # CLEANING LOCALISATION
 
+
+df['Departement'].replace(to_replace=r'\d[e]|\d\d[e]', value='', regex=True,inplace=True)
+
+
 Postal = []
 
 for k in df.index:
@@ -51,21 +55,19 @@ df['Postal'] = pd.Series(Postal)
 
 # CLEANING EN AMONT DES DONNEES
 
-for column in df.columns:
-    df['Poste']=df['Poste'].str.replace('H/F', "")
-    df['Poste']=df['Poste'].str.replace('h/f', "")
-    df['Poste']=df['Poste'].str.replace('("")',"")
-    df['Poste']=df['Poste'].str.replace('F/H', "")
-    df['Poste']=df['Poste'].str.replace('f/h', "")
-    df['Poste']=df['Poste'].str.replace('(F/M/X)', "")
-    df['Poste']=df['Poste'].str.replace('(de)', "")
-    df['Poste']=df['Poste'].str.replace(')', "")
-    df['Poste']=df['Poste'].str.replace('(', "")
-    df['Poste']=df['Poste'].str.replace('(-)', "")
+# for column in df.columns:
+#     df['Poste']=df['Poste'].str.replace('H/F', "")
+#     df['Poste']=df['Poste'].str.replace('h/f', "")
+#     df['Poste']=df['Poste'].str.replace('("")',"")
+#     df['Poste']=df['Poste'].str.replace('F/H', "")
+#     df['Poste']=df['Poste'].str.replace('f/h', "")
+#     df['Poste']=df['Poste'].str.replace('(F/M/X)', "")
+#     df['Poste']=df['Poste'].str.replace('(de)', "")
+#     df['Poste']=df['Poste'].str.replace(')', "")
+#     df['Poste']=df['Poste'].str.replace('(', "")
+#     df['Poste']=df['Poste'].str.replace('(-)', "")
     
 df['Poste'] = df['Poste'].str.upper()
-
-
 
 PosteDescrip = []
 
