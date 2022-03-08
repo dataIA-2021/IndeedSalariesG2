@@ -1,5 +1,3 @@
-
-
 # -*- coding: utf-8 -*-
 """
 Created on Wed Feb  9 15:52:07 2022
@@ -14,6 +12,10 @@ import seaborn as sb
 import time
 import re
 import math
+import plotly.express as px
+from wordcloud import WordCloud
+from collections import Counter
+
 
 
 df = pd.read_csv('Indeed_Salaries.csv')
@@ -31,9 +33,9 @@ for k in df.index:
 df['TContrat'] = pd.Series(TContrat)
 
 
+# CLEANING LOCALISATION
 
 Postal = []
-
 
 for k in df.index:
     Localisation = re.findall(r"\d\d*", df['Localisation'][k], re.IGNORECASE)
@@ -47,14 +49,55 @@ for k in df.index:
 df['Postal'] = pd.Series(Postal)
 
 
+# CLEANING EN AMONT DES DONNEES
+
+for column in df.columns:
+    df['Poste']=df['Poste'].str.replace('H/F', "")
+    df['Poste']=df['Poste'].str.replace('h/f', "")
+    df['Poste']=df['Poste'].str.replace('("")',"")
+    df['Poste']=df['Poste'].str.replace('F/H', "")
+    df['Poste']=df['Poste'].str.replace('f/h', "")
+    df['Poste']=df['Poste'].str.replace('(F/M/X)', "")
+    df['Poste']=df['Poste'].str.replace('(de)', "")
+    df['Poste']=df['Poste'].str.replace(')', "")
+    df['Poste']=df['Poste'].str.replace('(', "")
+    df['Poste']=df['Poste'].str.replace('(-)', "")
+    
+df['Poste'] = df['Poste'].str.upper()
 
 
 
-# SDescr = []
+PosteDescrip = []
 
-# for k in df.index:
-#         SDescr.append((re.findall(r"CDI|CDD", df['Description'][k], re.IGNORECASE)))
-# df['SDescr'] = pd.Series(SDescr)
-          
+for k in df.index:
+    if re.findall(r"INGENIEUR|ENGINEER", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA INGENIEUR')
+    elif re.findall(r"ENGINEER", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA INGENIEUR')
+    elif re.findall(r"MANA|MASTER|PROJET", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA MANAGER')
+    elif re.findall(r"SCIENTIST", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA SCIENTIST')
+    elif re.findall(r"ARCHITECT", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA ARCHITECT')
+    elif re.findall(r"DEVELOP", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DEVELOPPEUR')
+    elif re.findall(r"BASE", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA MANAGER')
+    elif re.findall(r"TECH", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('TECHNICIEN')
+    elif re.findall(r"ANALY", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA ANALYSTE')
+    elif re.findall(r"CONSUL|BIG", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('CONSULTANT')
+    elif re.findall(r"MARK", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('DATA MARKETING')
+    elif re.findall(r"DONN", df['Poste'][k], re.IGNORECASE):
+        PosteDescrip.append('GESTIONNAIRE DONNEES')
 
-# df.head()
+    else: PosteDescrip.append('0')
+    
+df['PosteDescrip'] = pd.Series(PosteDescrip)
+df.PosteDescrip.value_counts()
+
+
