@@ -102,62 +102,39 @@ def scrap_job(link_list):
 
 #%%
 df = pd.read_csv('Indeed_Salaries.csv')
-
+#%%
+df2 = pd.read_csv('Indeed_Salaries_iledefrance.csv')
+df2 = df2[:220]
+for k in df2.index : 
+    df2.Region[k] = 'Île de France' 
 
 #%%
+# import des librairies
+import sqlite3
 
-def remover_hf(df):
-    removehf = []
-    removehf2 = []
-    removehf3 = []
-    word = "H/F"
-    word2 ='F/H'
-    word3 = '(h/f)'
+#import mysql.connector
+import pymysql
+from sqlalchemy import create_engine
+from sqlalchemy.sql import text
+import yaml
+import pandas as pd
+# librairie pour lire les slah windows
+from pathlib import PurePath
 
-    for k in df.index:
-           removehf.append(len(re.findall(word, df['Poste'][k], flags=re.IGNORECASE)))
-           removehf2.append(len(re.findall(word2, df['Poste'][k], flags=re.IGNORECASE)))
-           removehf3.append(len(re.findall(word3, df['Poste'][k], flags=re.IGNORECASE)))
+obj = PurePath ('D:\Documents\DevIA\Python\SSH\connect.yml')
 
-    df['removed'] = pd.Series(removehf) 
-    df['removed2'] = pd.Series(removehf)
-    df['removed3'] = pd.Series(removehf) 
-    
-    for column in df.columns:
-        df['Poste']=df['Poste'].str.replace('H/F', "")
-        df['Poste']=df['Poste'].str.replace('h/f', "")
-        df['Poste']=df['Poste'].str.replace('(F/H)', "")
-        df['Poste']=df['Poste'].str.replace('F/M/X', "")
-        df['Poste']=df['Poste'].str.replace('F/M/X',"") 
-        df['Poste']=df['Poste'].str.replace('("")',"")
-df
+with open (obj, 'r') as f:
+    conf = yaml.safe_load(f)
+my = conf['MYSQL']
+conf['MYSQL']['user']
 
-return(df)
+# Connection MYSQL
+str = f"mysql+pymysql://{my['user']}:{my['password']}@{my['host']}:{my['port']}/bdd_dubiez"
+engine = create_engine(str, echo=False)
 
+print(engine)
+#%%
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#%%
 
 
