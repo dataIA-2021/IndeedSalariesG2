@@ -35,8 +35,7 @@ df = salary_stripper(df, 'Salaire')
 
 salaire1 = []
 for k in df.index:
-    if df
-        salaire1.append(len(re.findall(r"\d\d\.k", df['contrat'][k], re.IGNORECASE)))
+    salaire1.append(len(re.findall(r"\d\d\.k", df['contrat'][k], re.IGNORECASE)))
 
 
 

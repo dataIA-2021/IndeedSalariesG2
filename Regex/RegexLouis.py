@@ -30,6 +30,7 @@ for k in df.index:
     
 df['TContrat'] = pd.Series(TContrat)
 
+# ------------------------------------------------------------------------------
 
 
 Postal = []
@@ -47,14 +48,28 @@ for k in df.index:
 df['Postal'] = pd.Series(Postal)
 
 
+# ------------------------------------------------------------------------------
+
+Poste = []
+
+
+for k in df.index:
+    PosteDescription =re.findall(r"DATA", df['Poste'][k], re.IGNORECASE)
+    try: Poste.append(PosteDescription[0])
+    except: Poste.append('CDI')
+    
+df['TypePoste'] = pd.Series(Poste)
 
 
 
-# SDescr = []
 
-# for k in df.index:
-#         SDescr.append((re.findall(r"CDI|CDD", df['Description'][k], re.IGNORECASE)))
-# df['SDescr'] = pd.Series(SDescr)
-          
 
-# df.head()
+
+
+
+
+
+
+
+
+
