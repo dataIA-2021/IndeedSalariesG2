@@ -22,13 +22,15 @@ st.title('Prédiction de salaire 💰')
 
 
 
-df = pd.read_csv('Indeed_Salaries.csv')
+df = pd.read_csv('df_France.csv', encoding='latin-1')
 
 #remove HF
 for column in df.columns:
-    df['Poste']=df['Poste'].str.replace('H/F', "")
-    df['Poste']=df['Poste'].str.replace('h/f', "")
-    df['Poste']=df['Poste'].str.replace('("")',"")    
+    df['Poste']=df['Poste'].str.replace('H/F', " ")
+    df['Poste']=df['Poste'].str.replace('F/H', " ")
+    df['Poste']=df['Poste'].str.replace('F/H/X', " ")
+    df['Poste']=df['Poste'].str.replace('h/f', " ")
+    df['Poste']=df['Poste'].str.replace('("")'," ")    
     
 #salaire average    
 
@@ -46,7 +48,7 @@ def salary_stripper(dataframe, column):
     return dataframe
 
 df = salary_stripper(df, 'Salaire')
-
+df['Département'].replace(to_replace=r'\d[e]|\d\d[e]', value='', regex=True,inplace=True)
 
 
 
